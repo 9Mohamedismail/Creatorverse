@@ -1,0 +1,11 @@
+@import "@picocss/pico/css/pico.min.css";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
+
+:root {
+  --pico-font-family: "Space Grotesk", sans-serif;
+  --pico-font-family-sans-serif: "Space Grotesk", sans-serif;
+}
+
+* {
+  background-color: #191a23;
+}

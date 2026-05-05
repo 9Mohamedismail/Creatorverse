@@ -1,5 +1,9 @@
 function ShowCreators() {
-  return <h1> Welcome to Show Creators </h1>;
+  return (
+    <div>
+      <h1> Welcome to ShowCreators </h1>
+    </div>
+  );
 }
 
 export default ShowCreators;

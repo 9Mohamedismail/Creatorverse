@@ -1,0 +1,31 @@
+.button {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 30px;
+  cursor: pointer;
+  outline: none;
+}
+
+.button,
+.button:focus,
+.button:focus-visible,
+.button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.Edit {
+  border: 2px solid #ffa94d;
+  background: #ffa94d;
+}
+
+.Delete {
+  border: 2px solid #ff6b6b;
+  background: #ff6b6b;
+}
+
+.Add {
+  border: 2px solid #4dabf7;
+  background: #4dabf7;
+}

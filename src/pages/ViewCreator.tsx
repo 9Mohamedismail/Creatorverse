@@ -1,5 +1,11 @@
+import Card from "../components/Card";
+
 function ViewCreators() {
-  return <h1> Welcome to View Creators </h1>;
+  return (
+    <div className="view-creators-page">
+      <Card />
+    </div>
+  );
 }
 
 export default ViewCreators;
