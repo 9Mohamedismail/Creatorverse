@@ -30,7 +30,16 @@ function App() {
       <Routes>
         <Route path="/" element={<ShowCreators creators={creators} />} />
         <Route path="/view/:id" element={<ViewCreator creators={creators} />} />
-        <Route path="/add" element={<AddCreator />} />
+        <Route
+          path="/add"
+          element={
+            <AddCreator
+              onCreatorAdded={(newCreator) => {
+                setCreators((prevCreators) => [...prevCreators, newCreator]);
+              }}
+            />
+          }
+        />
         <Route path="/edit" element={<EditCreator />} />
       </Routes>
     </div>

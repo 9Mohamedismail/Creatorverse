@@ -2,6 +2,7 @@ import "../scss/FullCard.scss";
 import ButtonShell from "./ButtonShell";
 import { getSocialImage } from "../utils/getSocialImage";
 import type { Creator } from "../types/creator";
+import defaultCreatorImage from "../assets/default-creator.png";
 
 type CardProps = {
   creator: Creator;
@@ -19,6 +20,9 @@ function FullCard({ creator }: CardProps) {
           src={creator.image_url}
           alt="creator icon"
           className="creator-image"
+          onError={(event) => {
+            event.currentTarget.src = defaultCreatorImage;
+          }}
         />
 
         <div className="creator-info">

@@ -5,6 +5,7 @@ type ButtonShellProps = {
   onClick?: () => void;
   buttonType: "Add" | "Edit" | "Delete" | "Info";
   cardType?: "small" | "full";
+  type?: "button" | "submit";
 };
 
 function ButtonShell({
@@ -12,6 +13,7 @@ function ButtonShell({
   onClick,
   buttonType,
   cardType,
+  type = "button",
 }: ButtonShellProps) {
   const cardClass =
     cardType === "small"
@@ -22,6 +24,7 @@ function ButtonShell({
 
   return (
     <button
+      type={type}
       className={`button ${buttonType} ${cardClass} ${className}`}
       onClick={onClick}
     >

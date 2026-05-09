@@ -3,6 +3,7 @@ import ButtonShell from "./ButtonShell";
 import { Link } from "react-router-dom";
 import { getSocialImage } from "../utils/getSocialImage";
 import type { Creator } from "../types/creator";
+import defaultCreatorImage from "../assets/default-creator.png";
 
 type CardProps = {
   creator: Creator;
@@ -16,6 +17,9 @@ function Card({ creator }: CardProps) {
           src={creator.image_url}
           alt="creator icon"
           className="small-creator-card-image"
+          onError={(event) => {
+            event.currentTarget.src = defaultCreatorImage;
+          }}
         />
 
         <div className="small-creator-card-info">
@@ -36,11 +40,19 @@ function Card({ creator }: CardProps) {
 
               return (
                 <div className="small-creator-card-social" key={social.link}>
-                  <img
-                    src={socialImage}
-                    alt={`${social.name} icon`}
-                    className="small-creator-card-social-image"
-                  />
+                  <a
+                    href={social.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="small-creator-card-social"
+                    key={social.link}
+                  >
+                    <img
+                      src={socialImage}
+                      alt={`${social.name} icon`}
+                      className="small-creator-card-social-image"
+                    />
+                  </a>
                 </div>
               );
             })}
