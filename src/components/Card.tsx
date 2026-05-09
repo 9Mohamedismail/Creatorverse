@@ -1,69 +1,54 @@
 import "../scss/Card.scss";
 import ButtonShell from "./ButtonShell";
+import { Link } from "react-router-dom";
+import { getSocialImage } from "../utils/getSocialImage";
+import type { Creator } from "../types/creator";
 
-function Card() {
-  const tempCreator = [
-    {
-      id: 1,
-      name: "Marques Brownlee (MKBHD)",
-      url: [
-        {
-          name: "youtube",
-          handle: "@marquesbrownle",
-          link: "https://www.youtube.com/user/marquesbrownlee",
-        },
-        {
-          name: "twitter (X)",
-          handle: "@MKBHD",
-          link: "https://x.com/MKBHD",
-        },
-        {
-          name: "instagram",
-          handle: "@mkbhd",
-          link: "https://www.instagram.com/mkbhd/",
-        },
-      ],
-      description:
-        "Marques Keith Brownlee, known professionally as MKBHD, is an American influencer and professional ultimate frisbee player, best known for his YouTube videos reviewing technology devices.",
-      imageUrl:
-        "https://yt3.googleusercontent.com/qu4TmIaYUlS41-dJ9gZ7DUR3nilvmB5_11i6OKSdvNnBNiyOusZP1bMN6ICnuxtjFBb6ioKgRQ=s900-c-k-c0x00ffffff-no-rj",
-    },
-  ];
+type CardProps = {
+  creator: Creator;
+};
 
+function Card({ creator }: CardProps) {
   return (
     <>
-      {tempCreator.map((creator) => (
-        <article className="small-creator-card" key={creator.id}>
-          <img
-            src={creator.imageUrl}
-            alt="creator icon"
-            className="small-creator-card-image"
-          />
+      <article className="small-creator-card">
+        <img
+          src={creator.image_url}
+          alt="creator icon"
+          className="small-creator-card-image"
+        />
 
-          <div className="small-creator-card-info">
-            <h1>{creator.name}</h1>
+        <div className="small-creator-card-info">
+          <h1>{creator.name}</h1>
 
-            <div className="small-creator-card-buttons">
-              <ButtonShell buttonType="Edit" cardType="small" />
+          <div className="small-creator-card-buttons">
+            <ButtonShell buttonType="Edit" cardType="small" />
+            <Link to={`/view/${creator.id}`}>
               <ButtonShell buttonType="Info" cardType="small" />
-            </div>
+            </Link>
+          </div>
 
-            <div className="small-creator-card-links">
-              {creator.url.map((social) => (
-                <div className="small-creator-card-social" key={social.name}>
+          <div className="small-creator-card-links">
+            {creator.url?.map((social) => {
+              const socialImage = getSocialImage(social.name);
+
+              if (!socialImage) return null;
+
+              return (
+                <div className="small-creator-card-social" key={social.link}>
                   <img
-                    src="https://static.thenounproject.com/png/4595376-200.png"
-                    alt="social icon"
+                    src={socialImage}
+                    alt={`${social.name} icon`}
                     className="small-creator-card-social-image"
                   />
                 </div>
-              ))}
-            </div>
-
-            <p>{creator.description}</p>
+              );
+            })}
           </div>
-        </article>
-      ))}
+
+          <p>{creator.description}</p>
+        </div>
+      </article>
     </>
   );
 }

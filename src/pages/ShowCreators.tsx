@@ -1,10 +1,16 @@
 import Card from "../components/Card";
+import type { Creator } from "../types/creator";
 
-function ShowCreators() {
+type ShowCreatorsProps = {
+  creators: Creator[];
+};
+
+function ShowCreators({ creators }: ShowCreatorsProps) {
   return (
     <div>
-      <h1> Welcome to ShowCreators </h1>
-      <Card />
+      {creators.map((creator) => (
+        <Card key={creator.id} creator={creator} />
+      ))}
     </div>
   );
 }
