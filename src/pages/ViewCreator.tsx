@@ -1,9 +1,9 @@
-import Card from "../components/Card";
+import FullCard from "../components/FullCard";
 
 function ViewCreators() {
   return (
     <div className="view-creators-page">
-      <Card />
+      <FullCard />
     </div>
   );
 }

@@ -1,7 +1,7 @@
-import "../scss/Card.scss";
+import "../scss/FullCard.scss";
 import ButtonShell from "./ButtonShell";
 
-function Card() {
+function FullCard() {
   const tempCreator = [
     {
       id: 1,
@@ -13,12 +13,12 @@ function Card() {
           link: "https://www.youtube.com/user/marquesbrownlee",
         },
         {
-          name: "twitter (X)",
+          name: "Twitter (X)",
           handle: "@MKBHD",
           link: "https://x.com/MKBHD",
         },
         {
-          name: "instagram",
+          name: "Instagram",
           handle: "@mkbhd",
           link: "https://www.instagram.com/mkbhd/",
         },
@@ -32,35 +32,41 @@ function Card() {
 
   return (
     <>
-      {tempCreator.map((creator) => (
-        <article className="small-creator-card" key={creator.id}>
+      {tempCreator.map((creator, key) => (
+        <article className="creator-card">
           <img
             src={creator.imageUrl}
             alt="creator icon"
-            className="small-creator-card-image"
+            className="creator-image"
           />
 
-          <div className="small-creator-card-info">
+          <div className="creator-info">
             <h1>{creator.name}</h1>
+            <p>{creator.description}</p>
 
-            <div className="small-creator-card-buttons">
-              <ButtonShell buttonType="Edit" cardType="small" />
-              <ButtonShell buttonType="Info" cardType="small" />
-            </div>
-
-            <div className="small-creator-card-links">
-              {creator.url.map((social) => (
-                <div className="small-creator-card-social" key={social.name}>
+            <div className="creator-links">
+              {creator.url.map((social, key) => (
+                <div className="creator-social">
                   <img
                     src="https://static.thenounproject.com/png/4595376-200.png"
                     alt="social icon"
-                    className="small-creator-card-social-image"
+                    className="creator-social-image"
                   />
+                  <a
+                    href={social.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.handle}
+                  </a>
                 </div>
               ))}
             </div>
 
-            <p>{creator.description}</p>
+            <div className="creator-card-buttons">
+              <ButtonShell buttonType="Edit" cardType="full" />
+              <ButtonShell buttonType="Delete" cardType="full" />
+            </div>
           </div>
         </article>
       ))}
@@ -68,4 +74,4 @@ function Card() {
   );
 }
 
-export default Card;
+export default FullCard;

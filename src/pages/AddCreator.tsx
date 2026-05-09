@@ -1,5 +1,11 @@
+import Form from "../components/Form";
+
 function AddCreator() {
-  return <h1> Welcome to Add Creator </h1>;
+  return (
+    <div>
+      <Form />
+    </div>
+  );
 }
 
 export default AddCreator;

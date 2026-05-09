@@ -1,5 +1,11 @@
+import Form from "../components/Form";
+
 function EditCreator() {
-  return <h1> Welcome to Edit Creator </h1>;
+  return (
+    <div>
+      <Form />
+    </div>
+  );
 }
 
 export default EditCreator;
