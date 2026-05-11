@@ -14,7 +14,8 @@ function Form({ onCreatorAdded }: FormProps) {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
     const name = String(formData.get("name") || "").trim();
     const description = String(formData.get("description") || "").trim();
@@ -31,9 +32,14 @@ function Form({ onCreatorAdded }: FormProps) {
     ).trim();
     const instagramUrl = String(formData.get("instagram_url") || "").trim();
 
+    if (!name || !description || !image_url) {
+      alert("Name, description, and image URL are required.");
+      return;
+    }
+
     const url: SocialLink[] = [];
 
-    if (youtubeHandle || youtubeUrl) {
+    if (youtubeHandle && youtubeUrl) {
       url.push({
         name: "youtube",
         handle: youtubeHandle,
@@ -41,7 +47,7 @@ function Form({ onCreatorAdded }: FormProps) {
       });
     }
 
-    if (twitterHandle || twitterUrl) {
+    if (twitterHandle && twitterUrl) {
       url.push({
         name: "twitter",
         handle: twitterHandle,
@@ -49,7 +55,7 @@ function Form({ onCreatorAdded }: FormProps) {
       });
     }
 
-    if (instagramHandle || instagramUrl) {
+    if (instagramHandle && instagramUrl) {
       url.push({
         name: "instagram",
         handle: instagramHandle,
@@ -63,7 +69,7 @@ function Form({ onCreatorAdded }: FormProps) {
         name,
         description,
         image_url,
-        url,
+        url: url.length > 0 ? url : null,
       })
       .select()
       .single();

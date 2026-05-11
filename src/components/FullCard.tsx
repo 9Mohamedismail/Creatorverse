@@ -17,8 +17,8 @@ function FullCard({ creator }: CardProps) {
     <>
       <article className="creator-card" key={creator.id}>
         <img
-          src={creator.image_url}
-          alt="creator icon"
+          src={creator.image_url || defaultCreatorImage}
+          alt={creator.name}
           className="creator-image"
           onError={(event) => {
             event.currentTarget.src = defaultCreatorImage;
@@ -33,13 +33,15 @@ function FullCard({ creator }: CardProps) {
             {creator.url?.map((social) => {
               const socialImage = getSocialImage(social.name);
 
+              if (!social.link || !social.handle) return null;
+
               return (
-                <div className="small-creator-card-social" key={social.link}>
+                <div className="creator-social" key={social.link}>
                   {socialImage && (
                     <img
                       src={socialImage}
                       alt={`${social.name} icon`}
-                      className="small-creator-card-social-image"
+                      className="creator-social-image"
                     />
                   )}
 

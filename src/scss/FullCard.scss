@@ -1,11 +1,12 @@
 article.creator-card {
   width: min(100%, 1200px);
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
 
-  margin: 0;
+  margin: 0 auto;
   padding: 50px;
   background-color: #191a23;
 
@@ -21,7 +22,7 @@ article.creator-card {
 
 .creator-image {
   display: block;
-  width: min(100%, 720px);
+  width: min(100%, 520px);
   aspect-ratio: 1 / 1;
   object-fit: cover;
   margin: 0 auto;
@@ -60,8 +61,8 @@ article.creator-card {
 }
 
 .creator-social-image {
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 
@@ -85,6 +86,11 @@ article.creator-card {
     width: auto;
     flex-direction: row;
     align-items: flex-start;
+
+    /* This is the important part */
+    justify-content: center;
+
+    gap: 2rem;
   }
 
   .creator-card h1 {
@@ -92,7 +98,8 @@ article.creator-card {
   }
 
   .creator-info {
-    margin: auto;
+    margin: 0;
+    min-width: 0;
   }
 
   .creator-links {
@@ -105,7 +112,13 @@ article.creator-card {
   }
 
   .creator-image {
-    margin: auto;
+    margin: 0;
+  }
+
+  .creator-social-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
   }
 }
 
