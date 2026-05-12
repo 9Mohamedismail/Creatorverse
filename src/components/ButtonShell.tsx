@@ -3,9 +3,11 @@ import "../scss/Button.scss";
 type ButtonShellProps = {
   className?: string;
   onClick?: () => void;
-  buttonType: "Add" | "Edit" | "Delete" | "Info";
+  buttonType: "Add" | "Edit" | "Delete" | "Info" | "Cancel";
   cardType?: "small" | "full";
   type?: "button" | "submit";
+  disabled?: boolean;
+  label?: string;
 };
 
 function ButtonShell({
@@ -14,6 +16,8 @@ function ButtonShell({
   buttonType,
   cardType,
   type = "button",
+  disabled = false,
+  label,
 }: ButtonShellProps) {
   const cardClass =
     cardType === "small"
@@ -27,8 +31,9 @@ function ButtonShell({
       type={type}
       className={`button ${buttonType} ${cardClass} ${className}`}
       onClick={onClick}
+      disabled={disabled}
     >
-      {buttonType}
+      {label || buttonType}
     </button>
   );
 }

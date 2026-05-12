@@ -7,13 +7,19 @@
   outline: none;
 }
 
-.small-card-button {
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #ffffff;
-  font-size: 14px;
-  cursor: pointer;
-  outline: none;
+.small-creator-card-buttons {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+
+  a {
+    flex: 1;
+    display: flex;
+  }
+
+  .button {
+    flex: 1;
+  }
 }
 
 .button,

@@ -1,16 +1,39 @@
-import "../scss/FullCard.scss";
+import { useState } from "react";
+import DeleteModal from "./DeleteModal";
 import ButtonShell from "./ButtonShell";
 import { getSocialImage } from "../utils/getSocialImage";
 import type { Creator } from "../types/creator";
 import defaultCreatorImage from "../assets/default-creator.png";
+import { supabase } from "../client";
+import { useNavigate } from "react-router-dom";
+import "../scss/FullCard.scss";
 
 type CardProps = {
   creator: Creator;
+  onDelete: (id: number) => void;
 };
 
-function FullCard({ creator }: CardProps) {
-  if (!creator) {
-    return <p>Creator not found.</p>;
+function FullCard({ creator, onDelete }: CardProps) {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
+
+  async function handleConfirmDelete() {
+    setIsDeleting(true);
+
+    const { error } = await supabase
+      .from("creators")
+      .delete()
+      .eq("id", creator.id);
+
+    setIsDeleting(false);
+
+    if (error) {
+      console.error("Error deleting creator:", error);
+      return;
+    }
+
+    onDelete(creator.id);
   }
 
   return (
@@ -58,10 +81,27 @@ function FullCard({ creator }: CardProps) {
           </div>
 
           <div className="creator-card-buttons">
-            <ButtonShell buttonType="Edit" cardType="full" />
-            <ButtonShell buttonType="Delete" cardType="full" />
+            <ButtonShell
+              buttonType="Edit"
+              cardType="full"
+              onClick={() => navigate(`/edit/${creator.id}`)}
+            />
+            <ButtonShell
+              buttonType="Delete"
+              cardType="full"
+              onClick={() => setShowDeleteModal(true)}
+            />
           </div>
         </div>
+
+        {showDeleteModal && (
+          <DeleteModal
+            creatorName={creator.name}
+            onCancel={() => setShowDeleteModal(false)}
+            onConfirm={handleConfirmDelete}
+            isDeleting={isDeleting}
+          />
+        )}
       </article>
     </>
   );

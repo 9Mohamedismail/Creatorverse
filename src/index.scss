@@ -6,6 +6,11 @@
   --pico-font-family-sans-serif: "Space Grotesk", sans-serif;
 }
 
-* {
+body {
   background-color: #191a23;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
 }

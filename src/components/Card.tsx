@@ -1,6 +1,6 @@
 import "../scss/Card.scss";
 import ButtonShell from "./ButtonShell";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getSocialImage } from "../utils/getSocialImage";
 import type { Creator } from "../types/creator";
 import defaultCreatorImage from "../assets/default-creator.png";
@@ -10,6 +10,7 @@ type CardProps = {
 };
 
 function Card({ creator }: CardProps) {
+  const navigate = useNavigate();
   return (
     <>
       <article className="small-creator-card">
@@ -26,10 +27,14 @@ function Card({ creator }: CardProps) {
           <h1>{creator.name}</h1>
 
           <div className="small-creator-card-buttons">
-            <ButtonShell buttonType="Edit" cardType="small" />
             <Link to={`/view/${creator.id}`}>
               <ButtonShell buttonType="Info" cardType="small" />
             </Link>
+            <ButtonShell
+              buttonType="Edit"
+              cardType="small"
+              onClick={() => navigate(`/edit/${creator.id}`)}
+            />
           </div>
 
           <div className="small-creator-card-links">

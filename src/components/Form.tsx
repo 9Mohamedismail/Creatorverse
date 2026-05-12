@@ -3,15 +3,32 @@ import ButtonShell from "./ButtonShell";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../client";
 import type { Creator, SocialLink } from "../types/creator";
+import type { FormEvent } from "react";
 
 type FormProps = {
-  onCreatorAdded: (creator: Creator) => void;
+  onCreatorAdded?: (creator: Creator) => void;
+  onCreatorUpdated?: (creator: Creator) => void;
+  creatorToEdit?: Creator;
 };
 
-function Form({ onCreatorAdded }: FormProps) {
+function Form({ onCreatorAdded, onCreatorUpdated, creatorToEdit }: FormProps) {
   const navigate = useNavigate();
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const isEditing = Boolean(creatorToEdit);
+
+  const youtube = creatorToEdit?.url?.find(
+    (social) => social.name === "youtube",
+  );
+
+  const twitter = creatorToEdit?.url?.find(
+    (social) => social.name === "twitter",
+  );
+
+  const instagram = creatorToEdit?.url?.find(
+    (social) => social.name === "instagram",
+  );
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -63,24 +80,56 @@ function Form({ onCreatorAdded }: FormProps) {
       });
     }
 
-    const { data, error } = await supabase
-      .from("creators")
-      .insert({
-        name,
-        description,
-        image_url,
-        url: url.length > 0 ? url : null,
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Error adding creator:", error);
+    if (url.length === 0) {
+      alert("Please add at least one social link.");
       return;
     }
 
-    onCreatorAdded(data);
-    navigate("/");
+    if (isEditing && creatorToEdit) {
+      const { data, error } = await supabase
+        .from("creators")
+        .update({
+          name,
+          description,
+          image_url,
+          url,
+        })
+        .eq("id", creatorToEdit.id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error updating creator:", error);
+        return;
+      }
+
+      onCreatorUpdated?.(data);
+      navigate(`/view/${creatorToEdit.id}`);
+    } else {
+      const { data, error } = await supabase
+        .from("creators")
+        .insert({
+          name,
+          description,
+          image_url,
+          url,
+        })
+        .select()
+        .single();
+
+      if (error) {
+        if (error.code === "23505") {
+          alert("A creator with this name already exists.");
+          return;
+        }
+
+        console.error("Error adding creator:", error);
+        return;
+      }
+
+      onCreatorAdded?.(data);
+      navigate("/");
+    }
   }
 
   return (
@@ -88,15 +137,33 @@ function Form({ onCreatorAdded }: FormProps) {
       <fieldset>
         <label>
           Name
-          <input name="name" placeholder="Creator's name" />
+          <input
+            name="name"
+            placeholder="Creator's name"
+            defaultValue={creatorToEdit?.name || ""}
+            required
+          />
         </label>
+
         <label>
           Description
-          <textarea name="description" placeholder="Short bio..."></textarea>
+          <textarea
+            name="description"
+            placeholder="Short bio..."
+            defaultValue={creatorToEdit?.description || ""}
+            required
+          ></textarea>
         </label>
+
         <label>
           Image URL
-          <input type="url" name="image_url" placeholder="https://..." />
+          <input
+            type="url"
+            name="image_url"
+            placeholder="https://..."
+            defaultValue={creatorToEdit?.image_url || ""}
+            required
+          />
         </label>
 
         <label>YouTube</label>
@@ -105,12 +172,15 @@ function Form({ onCreatorAdded }: FormProps) {
             name="youtube_handle"
             placeholder="@handle"
             aria-label="YouTube Handle"
+            defaultValue={youtube?.handle || ""}
           />
+
           <input
             type="url"
             name="youtube_url"
             placeholder="https://..."
             aria-label="YouTube URL"
+            defaultValue={youtube?.link || ""}
           />
         </fieldset>
 
@@ -120,12 +190,15 @@ function Form({ onCreatorAdded }: FormProps) {
             name="twitter_handle"
             placeholder="@handle"
             aria-label="Twitter Handle"
+            defaultValue={twitter?.handle || ""}
           />
+
           <input
             type="url"
             name="twitter_url"
             placeholder="https://..."
             aria-label="Twitter URL"
+            defaultValue={twitter?.link || ""}
           />
         </fieldset>
 
@@ -135,16 +208,23 @@ function Form({ onCreatorAdded }: FormProps) {
             name="instagram_handle"
             placeholder="@handle"
             aria-label="Instagram Handle"
+            defaultValue={instagram?.handle || ""}
           />
+
           <input
             type="url"
             name="instagram_url"
             placeholder="https://..."
             aria-label="Instagram URL"
+            defaultValue={instagram?.link || ""}
           />
         </fieldset>
 
-        <ButtonShell buttonType="Add" cardType="full" type="submit" />
+        <ButtonShell
+          buttonType={isEditing ? "Edit" : "Add"}
+          cardType="full"
+          type="submit"
+        />
       </fieldset>
     </form>
   );
