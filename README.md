@@ -43,7 +43,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented required features:
 
-<img src='https://imgur.com/a/DliC3q4' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+[Video Walkthrough](https://i.imgur.com/z9Kewvn.mp4)
 
 <!-- Replace this with whatever GIF tool you used! -->
 
