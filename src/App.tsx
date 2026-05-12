@@ -71,6 +71,7 @@ function App() {
               <EditCreator
                 creators={creators}
                 onCreatorUpdated={handleCreatorUpdated}
+                onCreatorDeleted={handleDelete}
               />
             }
           />

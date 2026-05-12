@@ -5,9 +5,14 @@ import type { Creator } from "../types/creator";
 type EditCreatorProps = {
   creators: Creator[];
   onCreatorUpdated: (creator: Creator) => void;
+  onCreatorDeleted: (id: number) => void;
 };
 
-function EditCreator({ creators, onCreatorUpdated }: EditCreatorProps) {
+function EditCreator({
+  creators,
+  onCreatorUpdated,
+  onCreatorDeleted,
+}: EditCreatorProps) {
   const { id } = useParams();
 
   const creator = creators.find((creator) => creator.id === Number(id));
@@ -18,7 +23,11 @@ function EditCreator({ creators, onCreatorUpdated }: EditCreatorProps) {
 
   return (
     <div>
-      <Form creatorToEdit={creator} onCreatorUpdated={onCreatorUpdated} />
+      <Form
+        creatorToEdit={creator}
+        onCreatorUpdated={onCreatorUpdated}
+        onCreatorDeleted={onCreatorDeleted}
+      />
     </div>
   );
 }

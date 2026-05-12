@@ -1,20 +1,30 @@
 import "../scss/Form.scss";
 import ButtonShell from "./ButtonShell";
+import DeleteModal from "./DeleteModal";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../client";
 import type { Creator, SocialLink } from "../types/creator";
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 
 type FormProps = {
   onCreatorAdded?: (creator: Creator) => void;
   onCreatorUpdated?: (creator: Creator) => void;
+  onCreatorDeleted?: (id: number) => void;
   creatorToEdit?: Creator;
 };
 
-function Form({ onCreatorAdded, onCreatorUpdated, creatorToEdit }: FormProps) {
+function Form({
+  onCreatorAdded,
+  onCreatorUpdated,
+  onCreatorDeleted,
+  creatorToEdit,
+}: FormProps) {
   const navigate = useNavigate();
 
   const isEditing = Boolean(creatorToEdit);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const youtube = creatorToEdit?.url?.find(
     (social) => social.name === "youtube",
@@ -27,6 +37,27 @@ function Form({ onCreatorAdded, onCreatorUpdated, creatorToEdit }: FormProps) {
   const instagram = creatorToEdit?.url?.find(
     (social) => social.name === "instagram",
   );
+
+  async function handleConfirmDelete() {
+    if (!creatorToEdit) return;
+
+    setIsDeleting(true);
+
+    const { error } = await supabase
+      .from("creators")
+      .delete()
+      .eq("id", creatorToEdit.id);
+
+    setIsDeleting(false);
+
+    if (error) {
+      console.error("Error deleting creator:", error);
+      return;
+    }
+
+    onCreatorDeleted?.(creatorToEdit.id);
+    navigate("/");
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,8 +80,8 @@ function Form({ onCreatorAdded, onCreatorUpdated, creatorToEdit }: FormProps) {
     ).trim();
     const instagramUrl = String(formData.get("instagram_url") || "").trim();
 
-    if (!name || !description || !image_url) {
-      alert("Name, description, and image URL are required.");
+    if (!name || !description) {
+      alert("Name and description are required.");
       return;
     }
 
@@ -162,7 +193,6 @@ function Form({ onCreatorAdded, onCreatorUpdated, creatorToEdit }: FormProps) {
             name="image_url"
             placeholder="https://..."
             defaultValue={creatorToEdit?.image_url || ""}
-            required
           />
         </label>
 
@@ -225,6 +255,23 @@ function Form({ onCreatorAdded, onCreatorUpdated, creatorToEdit }: FormProps) {
           cardType="full"
           type="submit"
         />
+
+        {isEditing && creatorToEdit && (
+          <ButtonShell
+            buttonType="Delete"
+            cardType="full"
+            onClick={() => setShowDeleteModal(true)}
+          />
+        )}
+
+        {showDeleteModal && creatorToEdit && (
+          <DeleteModal
+            creatorName={creatorToEdit.name}
+            onCancel={() => setShowDeleteModal(false)}
+            onConfirm={handleConfirmDelete}
+            isDeleting={isDeleting}
+          />
+        )}
       </fieldset>
     </form>
   );

@@ -15,7 +15,7 @@ function Card({ creator }: CardProps) {
     <>
       <article className="small-creator-card">
         <img
-          src={creator.image_url}
+          src={creator.image_url || defaultCreatorImage}
           alt="creator icon"
           className="small-creator-card-image"
           onError={(event) => {
