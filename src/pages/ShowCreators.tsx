@@ -13,12 +13,14 @@ function ShowCreators({ creators }: ShowCreatorsProps) {
 
   return (
     <div className="show-creators-page">
-      {creators.length > 0 && (
+      {creators.length > 0 ? (
         <div className="creators-grid">
           {creators.map((creator) => (
             <Card key={creator.id} creator={creator} />
           ))}
         </div>
+      ) : (
+        <h1>No Creators Yet 😞</h1>
       )}
 
       <ButtonShell
